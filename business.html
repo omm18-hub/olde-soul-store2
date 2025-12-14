@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olde Soul Store - Treasures for the Soul and the Eye</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. Global & Typography Reset --- */
+        :root {
+            --color-primary: #1C3A35; /* Deep Forest Green (Trust/Royalty) */
+            --color-secondary: #FFF8E1; /* Cream / Off-White */
+            --color-accent: #DAA520; /* Rich Gold */
+            --color-cta: #800020; /* Deep Burgundy */
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Lato', sans-serif;
+
+            /* Interactive Colors for Hampers (Examples) */
+            --color-regular-perk: #FDFD96; 
+            --color-mood-maker: #B3CDE0; 
+            --color-birthday: #FF69B4; 
+            --color-anime: #B8860B; 
+            --color-delusional: #E6E6FA; 
+
+            /* Library Colors (Examples) */
+            --color-classic: #B0C4DE; /* Light Steel Blue */
+            --color-manga: #FFDAB9; /* Peach */
+            --color-self-help: #C4A484; /* Khaki */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            color: var(--color-primary);
+            background-color: var(--color-secondary);
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--color-primary);
+            transition: color 0.3s;
+        }
+
+        /* --- 2. Header & Navigation (Fixed) --- */
+        .site-header {
+            background-color: var(--color-primary);
+            color: var(--color-secondary);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-accent); 
+            cursor: pointer;
+        }
+
+        .main-nav a {
+            color: var(--color-secondary);
+            margin-left: 20px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .main-nav a:hover {
+            color: var(--color-accent);
+            border-bottom: 2px solid var(--color-accent);
+        }
+        
+        /* --- 3. Page Content Container --- */
+        .page-section {
+            display: none; /* Hide all pages by default */
+        }
+        
+        /* --- 4. Shared Product Card Styles --- */
+        .product-section { padding: 4rem 5%; text-align: center; }
+        .section-title { font-size: 2rem; margin-bottom: 2.5rem; position: relative; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 2rem; }
+        .product-card {
+            background-color: #fff; padding: 15px; border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+            border: 1px solid #e0e0e0; overflow: hidden; position: relative;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            border: 2px solid var(--color-accent); 
+        }
+        
+        .image-container { height: 200px; margin-bottom: 15px; border-radius: 4px; overflow: hidden; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .price { font-weight: 700; font-size: 1.1rem; color: var(--color-cta); margin: 8px 0; }
+        
+        /* --- 5. THE LIBRARY SPECIFIC STYLES --- */
+        #library-main {
+            padding: 40px 5%;
+            display: flex;
+            gap: 30px;
+            text-align: left;
+        }
+        .library-sidebar {
+            flex: 0 0 250px; /* Fixed width sidebar */
+            padding: 20px;
+            background-color: #f7f3e8; /* Light background for contrast */
+            border-radius: 8px;
+            height: fit-content;
+            position: sticky;
+            top: 100px; /* Stick below the header */
+        }
+        .library-content {
+            flex: 1;
+        }
+        .filter-group {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+        }
+        .filter-group h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        .filter-item {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            color: var(--color-primary);
+        }
+        .filter-item:hover {
+            text-decoration: underline;
+            color: var(--color-accent);
+        }
+        .library-book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .book-card-library {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .book-card-library .image-container {
+            height: 300px; /* Taller image for book covers */
+        }
+        .book-card-library h3 {
+            font-size: 1.3rem;
+            margin-top: 10px;
+        }
+
+        /* --- 6. Other Component Styles (As in previous version) --- */
+        .hero-banner { background: url('hero-banner.jpg') no-repeat center center/cover; height: 70vh; display: flex; justify-content: center; align-items: center; text-align: center; }
+        .hero-content { background-color: rgba(255, 255, 255, 0.85); padding: 3rem 4rem; border-radius: 10px; }
+        .trust-signal { background-color: var(--color-primary); color: var(--color-secondary); padding: 5rem 5%; text-align: center; }
+        .pdp-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 40px; flex-wrap: wrap; }
+        .site-footer { background-color: #102523; color: var(--color-secondary); text-align: center; padding: 2rem; }
+        
+        /* --- 7. Responsiveness --- */
+        @media (max-width: 992px) {
+            #library-main { flex-direction: column; }
+            .library-sidebar { width: 100%; position: static; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo" onclick="showPage('home')">Olde Soul Store</div>
+        <nav class="main-nav">
+            <a onclick="showPage('home', 'collections')">Curated Collections</a>
+            <a onclick="showPage('library-main')">The Library</a>
+            <a onclick="showPage('tale')">Our Tale</a>
+            <a onclick="showPage('home', 'custom')" class="nav-button">The Vault</a>
+        </nav>
+        <div class="nav-icons">
+            <span class="icon">🔍</span>
+            <span class="icon">🛒</span>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div id="home" class="page-section">
+            <section class="hero-banner">
+                <div class="hero-content">
+                    <h1>Treasures for the Soul and the Eye.</h1>
+                    <p>Handpicked gifts and rare books, crafted for the discerning soul.</p>
+                    <button class="cta-button" onclick="showPage('home', 'collections')">Explore the Collections</button>
+                </div>
+            </section>
+
+            <section id="collections" class="product-section">
+                <h2 class="section-title">I. Signature & Sentimental</h2>
+                <div class="product-grid">
+                    <div class="product-card regular-perk" onclick="showHamperPDP('The Regular Perk', 'hamper-regular.jpg', '₹250.00', 'Signature & Sentimental')">
+                        <div class="image-container"><img src="hamper-regular.jpg" alt="Regular Perk Hamper"></div>
+                        <h3>Regular Perk</h3>
+                        <p class="price">From ₹250</p>
+                        <div class="color-bar"></div>
+                    </div>
+                    <div class="product-card delighted-exclusive" onclick="showHamperPDP('The Delighted Exclusive', 'hamper-delighted.jpg', '₹699.00', 'Signature & Sentimental')">
+                        <div class="image-container"><img src="hamper-delighted.jpg" alt="Delighted Exclusive Hamper"></div>
+                        <h3>Delighted Exclusive</h3>
+                        <p class="price">₹699.00</p>
+                        <div class="color-bar"></div>
+                    </div>
+                    <div class="product-card coupe-love" onclick="showHamperPDP('Mood Maker Perk', 'hamper-mood-maker.jpg', '₹480.00', 'Signature & Sentimental')">
+                        <div class="image-container"><img src="hamper-mood-maker.jpg" alt="Mood Maker Perk Hamper"></div>
+                        <h3>Mood Maker Perk</h3>
+                        <p class="price">₹480.00</p>
+                        <div class="color-bar"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="product-section" style="background-color: #F8F4E3;">
+                <h2 class="section-title">II. Celebration Bespoke</h2>
+                <div class="product-grid">
+                    <div class="product-card birthday-wishing" onclick="showHamperPDP('Birthday Wishing Perk', 'hamper-birthday.jpg', '₹720.00', 'Celebration Bespoke')">
+                        <div class="image-container"><img src="hamper-birthday.jpg" alt="Birthday Wishing Perk Hamper"></div>
+                        <h3>Birthday Wishing Perk</h3>
+                        <p class="price">₹720.00</p>
+                        <div class="color-bar"></div>
+                    </div>
+                    <div class="product-card anime-perk" onclick="showHamperPDP('Anime Perk', 'hamper-anime.jpg', '₹550.00', 'Celebration Bespoke')">
+                        <div class="image-container"><img src="hamper-anime.jpg" alt="Anime Perk Hamper"></div>
+                        <h3>Anime Perk</h3>
+                        <p class="price">₹550.00</p>
+                        <div class="color-bar"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="custom-hamper-block" id="custom">
+                <h2>Craft Your Own Legacy</h2>
+                <p>For truly unique and customized gifts—like our 'Delusional Perk' or 'Customized Kinderjoy'—DM us directly to start curating a bespoke hamper tailored to perfection.</p>
+                <a href="https://www.instagram.com/olde__soul.firm?igsh=MXBtbXQzdzlxbzV2cw%3D%3D" target="_blank" class="insta-cta-button">
+                    DM Us To Start Your Bespoke Hamper
+                </a>
+                <span class="insta-handle">@olde__soul.firm</span>
+            </section>
+            
+            <section id="library" class="product-section">
+                <h2 class="section-title">III. The Library Spotlight</h2>
+                <div class="product-grid">
+                    <div class="product-card" onclick="showPage('library-main')">
+                        <div class="image-container" style="background-color: var(--color-classic);"><img src="book-classic.jpg" alt="Classic Literature Book"></div>
+                        <h3>Explore All Classics</h3>
+                        <p class="price">View The Library</p>
+                    </div>
+                    <div class="product-card" onclick="showPage('library-main')">
+                        <div class="image-container" style="background-color: var(--color-manga);"><img src="book-manga.jpg" alt="Manga Volume 3"></div>
+                        <h3>Manga & Comics</h3>
+                        <p class="price">View The Library</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="trust-signal">
+                <h2 class="section-title">The Olde Soul Promise.</h2>
+                <div class="promise-points">
+                    <div><span class="promise-icon">📜</span><h3>Heritage Quality</h3><p>Every item is sourced and inspected for timeless value and craftsmanship.</p></div>
+                    <div><span class="promise-icon">🔒</span><h3>Secure Checkout</h3><p>Protected payment gateways ensure your transactions are safe and private.</p></div>
+                    <div><span class="promise-icon">✨</span><h3>Personalized Service</h3><p>A dedicated team to help you curate the perfect gift or find that rare volume.</p></div>
+                </div>
+            </section>
+        </div>
+
+        <div id="library-main" class="page-section">
+            <div class="library-sidebar">
+                <h2>The Library</h2>
+                <p style="margin-bottom: 25px; font-style: italic; color: #555;">Discover the perfect tale.</p>
+                
+                <div class="filter-group">
+                    <h3>Collections</h3>
+                    <a class="filter-item" data-category="all" onclick="filterBooks('all')">All Books</a>
+                    <a class="filter-item" data-category="classic" onclick="filterBooks('classic')">Classic Literature</a>
+                    <a class="filter-item" data-category="manga" onclick="filterBooks('manga')">Manga & Comics</a>
+                    <a class="filter-item" data-category="self-help" onclick="filterBooks('self-help')">Self-Help & Journals</a>
+                </div>
+                
+                <div class="filter-group">
+                    <h3>Price Range</h3>
+                    <a class="filter-item" onclick="filterPrice(120, 200)">₹120 - ₹200</a>
+                    <a class="filter-item" onclick="filterPrice(201, 350)">₹201 - ₹350</a>
+                </div>
+            </div>
+
+            <div class="library-content">
+                <h1 style="font-size: 3rem; margin-bottom: 30px;">The Archives of Olde Soul</h1>
+                
+                <div id="book-listing" class="library-book-grid">
+                    <div class="book-card-library" data-category="classic" data-price="280" onclick="showBookPDP('The Masterpiece of Destiny', 'book-classic-1.jpg', '₹280.00', 'Classic Literature', 'Eleanor Vane')">
+                        <div class="image-container" style="background-color: var(--color-classic);"><img src="book-classic-1.jpg" alt="The Masterpiece of Destiny"></div>
+                        <h3>The Masterpiece of Destiny</h3>
+                        <p style="color: #555;">By Eleanor Vane</p>
+                        <p class="price">₹280.00</p>
+                    </div>
+                    <div class="book-card-library" data-category="manga" data-price="199" onclick="showBookPDP('The Rising Manga Vol. 3', 'book-manga-1.jpg', '₹199.00', 'Manga', 'Satoshi Kun')">
+                        <div class="image-container" style="background-color: var(--color-manga);"><img src="book-manga-1.jpg" alt="The Rising Manga Vol. 3"></div>
+                        <h3>The Rising Manga Vol. 3</h3>
+                        <p style="color: #555;">By Satoshi Kun</p>
+                        <p class="price">₹199.00</p>
+                    </div>
+                    <div class="book-card-library" data-category="self-help" data-price="345" onclick="showBookPDP('The Quiet Confidence', 'book-self-help-1.jpg', '₹345.00', 'Self-Help', 'Dr. Evelyn Reed')">
+                        <div class="image-container" style="background-color: var(--color-self-help);"><img src="book-self-help-1.jpg" alt="The Quiet Confidence"></div>
+                        <h3>The Quiet Confidence</h3>
+                        <p style="color: #555;">By Dr. Evelyn Reed</p>
+                        <p class="price">₹345.00</p>
+                    </div>
+                    <div class="book-card-library" data-category="classic" data-price="140" onclick="showBookPDP('Wuthering Heights', 'book-classic-2.jpg', '₹140.00', 'Classic Literature', 'Emily Brontë')">
+                        <div class="image-container" style="background-color: var(--color-classic);"><img src="book-classic-2.jpg" alt="Wuthering Heights"></div>
+                        <h3>Wuthering Heights</h3>
+                        <p style="color: #555;">By Emily Brontë</p>
+                        <p class="price">₹140.00</p>
+                    </div>
+                    <div class="book-card-library" data-category="manga" data-price="210" onclick="showBookPDP('Dragon Quest: Volume 1', 'book-manga-2.jpg', '₹210.00', 'Manga', 'Akira Toriyama')">
+                        <div class="image-container" style="background-color: var(--color-manga);"><img src="book-manga-2.jpg" alt="Dragon Quest: Volume 1"></div>
+                        <h3>Dragon Quest: Volume 1</h3>
+                        <p style="color: #555;">By Akira Toriyama</p>
+                        <p class="price">₹210.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="tale" class="page-section">
+            <section class="tale-container">
+                <h1 class="tale-title">Our Tale: Where Every Item Has a Past</h1>
+                <p class="tale-subtitle">A heritage of curation, carried into the modern day.</p>
+                <div class="tale-section">
+                    <h2>The Fading Map and the Founding Vision</h2>
+                    <p>The **Olde Soul Store** was not established overnight; it was discovered slowly, like tracing a faded map. Our journey began with a single, battered chest filled with forgotten letters and first-edition novels...</p>
+                    <p class="quote">"We do not sell items; we re-home legacies. Every piece is a conversation waiting to be had."</p>
+                </div>
+                <div class="tale-section">
+                    <h2>A Promise Sealed in Wax and Gold</h2>
+                    <p>To uphold the Royal Vibe you seek, we commit to uncompromising quality... **Trust** is the oldest currency we deal in.</p>
+                    <div class="founder-photo-container">
+                        <img src="founder-photo.jpg" alt="Photo of Olde Soul Store Founder">
+                    </div>
+                </div>
+                <div class="tale-section">
+                    <h2>The Soul, Shared</h2>
+                    <p>...Your patronage preserves history and inspires us to continue our meticulous hunt for the next timeless treasure.</p>
+                </div>
+            </section>
+        </div>
+
+        <div id="hamper-pdp" class="page-section product-detail-page">
+            <section class="pdp-container">
+                <div class="pdp-gallery">
+                    <div class="main-pdp-image-container">
+                        <img id="hamper-img" src="" alt="Hamper Image">
+                    </div>
+                </div>
+                <div class="pdp-details">
+                    <h1 class="pdp-title" id="hamper-title"></h1>
+                    <h2 class="pdp-subtitle">From the <span id="hamper-category"></span> Collection</h2>
+                    <div class="price-block">
+                        <span class="pdp-price" id="hamper-price"></span>
+                        <span class="price-note"> (Approx. ₹250 to ₹750 Price Range)</span>
+                    </div>
+                    <div class="story-section"><h3>The Story: A Joyful Interlude</h3><p>This hamper is the pinnacle of thoughtful gifting...</p></div>
+                    <div class="contents-section">
+                        <h3>Contents Include:</h3>
+                        <ul><li>**Featured Book:** Classic Literature (Softcover) or a Comic Collector's Print</li><li>Artisan Hand-Poured Candle</li><li>Small Batch Gourmet Chocolates</li></ul>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="add-to-cart-btn">Add to Cart</button>
+                        <button class="buy-now-btn">Buy Now</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="book-pdp" class="page-section product-detail-page">
+            <section class="pdp-container">
+                <div class="pdp-gallery">
+                    <div class="main-pdp-image-container" id="book-img-container">
+                        <img id="book-img" src="" alt="Book Cover">
+                    </div>
+                </div>
+                <div class="pdp-details">
+                    <h1 class="pdp-title" id="book-title"></h1>
+                    <p class="pdp-author">By <span id="book-author"></span> | Category: <span id="book-category"></span></p>
+                    <div class="price-block">
+                        <span class="pdp-price" id="book-price"></span>
+                        <span class="price-note"> (Approx. ₹120 to ₹350 Price Range)</span>
+                    </div>
+                    <div class="specs-section">
+                        <h3>Book Details</h3>
+                        <div class="specs-grid">
+                            <div class="spec-item"><strong>Author:</strong><span id="pdp-author-spec"></span></div>
+                            <div class="spec-item"><strong>Format:</strong><span>Hardcover (Premium Cloth Binding)</span></div>
+                            <div class="spec-item"><strong>Edition:</strong><span>Vintage Reprint (1995)</span></div>
+                            <div class="spec-item"><strong>Condition:</strong><span>Good (Collector's Quality)</span></div>
+                        </div>
+                    </div>
+                    <div class="blurb-section">
+                        <p>A sweeping tale of ambition and sacrifice set against the backdrop of 19th-century Europe. Vane's prose captures the very essence of the "Olde Soul"—a must-have for every serious library.</p>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="add-to-cart-btn">Add to Cart</button>
+                        <button class="buy-now-btn">Buy Now</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer class="site-footer">
+        <p>&copy; 2025 Olde Soul Store. All Rights Reserved. | Designed with a touch of Gold and Green.</p>
+    </footer>
+
+    <script>
+        // --- Single Page Navigation Logic ---
+        function showPage(pageId, scrollAnchor = null) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            const page = document.getElementById(pageId);
+            if (page) {
+                page.style.display = (pageId === 'library-main' ? 'flex' : 'block');
+                window.scrollTo(0, 0); 
+            }
+
+            if (pageId === 'home' && scrollAnchor) {
+                setTimeout(() => {
+                    const anchorElement = document.getElementById(scrollAnchor);
+                    if (anchorElement) {
+                        anchorElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 50);
+            }
+        }
+
+        // --- PDP Data Population Logic ---
+        function showHamperPDP(title, imgSrc, price, category) {
+            document.getElementById('hamper-title').textContent = title;
+            document.getElementById('hamper-img').src = imgSrc;
+            document.getElementById('hamper-category').textContent = category;
+            document.getElementById('hamper-price').textContent = price;
+            showPage('hamper-pdp');
+        }
+
+        function showBookPDP(title, imgSrc, price, category, author) {
+            document.getElementById('book-title').textContent = title;
+            document.getElementById('book-img').src = imgSrc;
+            document.getElementById('book-category').textContent = category;
+            document.getElementById('book-price').textContent = price;
+            document.getElementById('book-author').textContent = author;
+            document.getElementById('pdp-author-spec').textContent = author; 
+            showPage('book-pdp');
+        }
+        
+        // --- Library Filtering Logic ---
+        function filterBooks(category, minPrice = 120, maxPrice = 350) {
+            const books = document.querySelectorAll('.book-card-library');
+            
+            books.forEach(book => {
+                const bookCategory = book.getAttribute('data-category');
+                const bookPrice = parseInt(book.getAttribute('data-price'));
+                
+                const categoryMatch = (category === 'all' || bookCategory === category);
+                const priceMatch = (bookPrice >= minPrice && bookPrice <= maxPrice);
+
+                if (categoryMatch && priceMatch) {
+                    book.style.display = 'block';
+                } else {
+                    book.style.display = 'none';
+                }
+            });
+        }
+
+        function filterPrice(minPrice, maxPrice) {
+            // Apply price filter to the currently selected category (or 'all' if none selected)
+            let currentCategory = 'all'; 
+            document.querySelectorAll('.filter-item').forEach(item => {
+                if (item.classList.contains('active-filter') && item.getAttribute('data-category')) {
+                    currentCategory = item.getAttribute('data-category');
+                }
+            });
+            filterBooks(currentCategory, minPrice, maxPrice);
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('home');
+            // Initial filter on Library page
+            document.getElementById('library-main').addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-item')) {
+                    document.querySelectorAll('.filter-item').forEach(item => item.classList.remove('active-filter'));
+                    e.target.classList.add('active-filter');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
